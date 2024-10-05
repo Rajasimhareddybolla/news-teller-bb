@@ -1,6 +1,6 @@
 import os
 import datetime
-from pydub import AudioSegment
+import wave
 import azure.cognitiveservices.speech as speechsdk
 import json
 from . import create_con_text
@@ -57,24 +57,33 @@ class TextToSpeech:
         
         return merged_audio
 
-    def merge_audio_files_pydub(self , audio_files, output_dir):
-        # Create an empty AudioSegment
-        combined = AudioSegment.empty()
-        sorted_files = sorted(audio_files , key = lambda x : int(x.split("_")[-1].split(".")[0]))
-        # Iterate over each audio file and append to the combined segment
-        for file_path in sorted_files:
-            audio = AudioSegment.from_file(file_path)
-            combined += audio
-        os.makedirs(output_dir, exist_ok=True)
-        # Define output file path
-        output_file_path = os.path.join(output_dir, 'output.mp3')
+    def merge_audio_files_wave(self, audio_files, output_dir):
+        # Sort the files based on the numeric value in their names
+        sorted_files = sorted(audio_files, key=lambda x: int(x.split("_")[-1].split(".")[0]))
 
-        # Export the combined audio
-        combined.export(output_file_path, format='mp3')
+        # Ensure the output directory exists
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Define output file path
+        output_file_path = os.path.join(output_dir, 'output.wav')
+
+        # Open the first file to get the parameters
+        with wave.open(sorted_files[0], 'rb') as wf:
+            params = wf.getparams()
+            combined_frames = wf.readframes(wf.getnframes())
+
+        # Append the rest of the files
+        for file_path in sorted_files[1:]:
+            with wave.open(file_path, 'rb') as wf:
+                combined_frames += wf.readframes(wf.getnframes())
+
+        # Write the combined frames to the output file
+        with wave.open(output_file_path, 'wb') as wf:
+            wf.setparams(params)
+            wf.writeframes(combined_frames)
 
         print(f"Audio files have been merged into '{output_file_path}'")
         return output_file_path
-
     def cleanup_files(self, files_to_remove):
         for file in files_to_remove:
             if os.path.exists(file):

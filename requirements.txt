@@ -21,3 +21,4 @@ faiss-cpu
 waitress
 ffmpeg-python
 gunicorn
+wave
