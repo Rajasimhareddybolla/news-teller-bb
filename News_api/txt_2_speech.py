@@ -52,7 +52,7 @@ class TextToSpeech:
             if result:
                 audio_files.append(result)
 
-        merged_audio = self.merge_audio_files_pydub(audio_files, output_dir)
+        merged_audio = self.merge_audio_files_wave(audio_files, output_dir)
         self.cleanup_files(audio_files + [os.path.join(output_dir, 'input.txt')])
         
         return merged_audio

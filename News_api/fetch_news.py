@@ -28,8 +28,8 @@ def get_unified_news(query_news = None, query_edge = None):
     #     temp["link"]  = article["url"]
     #     final["aritcles"].append(temp)
     # Convert response_news format
-    news= ["AIML" ,"AR-VR", "Block Chain"]
-    for i in range(3):
+    news= ["AIML" , "Block Chain"]
+    for i in range(len(news)):
         print("compiling")
         response_news = newsApi.get_news(news[i])
         for  article in response_news["articles"]:
