@@ -1,21 +1,19 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 import datetime
 import os
-from langchain.schema import Document
-from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
 # from langchain_chroma.vectorstores import Chroma
 
 from langchain.prompts import   PromptTemplate
 from langchain.chains import LLMChain
-import time
-from dotenv import load_dotenv
-from . import convert_db
 import json
 ## adjust the prompt in this its not good
 
-load_dotenv()
+apis = ["AIzaSyCVD2lN4cUXiiR3B3uW4XqZQbPPsUxaT0Q" ,"AIzaSyDiGh-sgE-MqFVq-4fRELfji61e66WatrI" , "AIzaSyBrS_cbP7xSgblv0lJg9nbcdyN3SS8xl6g"  , "AIzaSyD6dV0eY_tTTyIYKVUuRdi4FYSyzsOktU0" , "AIzaSyDFb40ou0vHKAseJG50S1-Cmm_m5Oc1Q2k" , "AIzaSyB3r2h5-SrU60MyaZIXg-Dl7fuJ4fG-Oro" ,"AIzaSyCMd32WUqHQc0P5M3qw9m6lteBfAYbcS2I" , "AIzaSyBfKmCv0vO9HFzk3UpkqkRFRIQhPpfEyWU"]
+import random
 class NewsSummarizer:
     def __init__(self ):
+
+        os.environ["GOOGLE_API_KEY"] = random.choice(apis)
         os.makedirs("text/summarization" , exist_ok = True)
         if not os.path.exists("text/summarization/history.json"):
             with open("text/summarization/history.json" , "w") as f:

@@ -39,6 +39,11 @@ def is_new_day():
 def destroy():
     if is_new_day():
         # Clean the 'chats' directory
+        db_dir ="db"
+        for item in os.listdir(db_dir):
+            item_path = os.path.join(db_dir, item)
+            if os.path.isdir(item_path):
+                shutil.rmtree(item_path)  
         chats_directory = 'chats'
         clean_directory(chats_directory)
         update_history_file(chats_directory)
@@ -58,5 +63,4 @@ def destroy():
         text_directory = 'text/summarization'
         os.mkdir(text_directory)
         update_history_file(text_directory)
-        
         

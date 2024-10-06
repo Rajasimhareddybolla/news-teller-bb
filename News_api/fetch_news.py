@@ -1,8 +1,9 @@
-import json
-import os
-import datetime
+
+import re
+
+
 from . import newsApi
-from . import newsEdge
+
 import requests
 from bs4 import BeautifulSoup
 def get_unified_news(query_news = None, query_edge = None):
@@ -40,9 +41,13 @@ def get_unified_news(query_news = None, query_edge = None):
             temp["title"] = article["title"]
             temp["brief"] = article["description"]
             temp["image"] =  article["urlToImage"]
-            temp["content"] = fetch_full_content(article["url"])+" ..."
+            temp["content"] = article["url"]
             temp["label"] = news[i]
-            temp["author"] = article["author"]
+            if article["author"] is None:
+                temp["author"] = "Anonymous"
+            else:
+                temp["author"] = article["author"]
+
             final["Articles"].append(temp)
             id +=1
     print("compiled")

@@ -1,7 +1,5 @@
 import os
 import json
-import datetime
-import faiss
 from dotenv import load_dotenv
 from langchain.docstore import InMemoryDocstore
 from langchain.vectorstores import FAISS
@@ -12,14 +10,15 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 from . import convert_db  # assuming this is your local utility module
 
-# Chat class managing instances and interactions with the FAISS index and LLM
+# Chiat class managing instances and interactions with the FAISS index and LLM
+import random
 class Chat:
     instances = {}
     instances_urls = {}
-
     def __init__(self, urls=None):
+        apis = ["AIzaSyCVD2lN4cUXiiR3B3uW4XqZQbPPsUxaT0Q" ,"AIzaSyDiGh-sgE-MqFVq-4fRELfji61e66WatrI" , "AIzaSyBrS_cbP7xSgblv0lJg9nbcdyN3SS8xl6g"  , "AIzaSyD6dV0eY_tTTyIYKVUuRdi4FYSyzsOktU0" , "AIzaSyDFb40ou0vHKAseJG50S1-Cmm_m5Oc1Q2k" , "AIzaSyB3r2h5-SrU60MyaZIXg-Dl7fuJ4fG-Oro" ,"AIzaSyCMd32WUqHQc0P5M3qw9m6lteBfAYbcS2I" , "AIzaSyBfKmCv0vO9HFzk3UpkqkRFRIQhPpfEyWU"]
         if urls:
-            load_dotenv()
+            os.environ["GOOGLE_API_KEY"] = random.choice(apis)
             self.conversation_history = []
             os.makedirs("chats", exist_ok=True)
             if not os.path.exists("chats/history.json"):
@@ -53,7 +52,12 @@ class Chat:
             system_prompt = (
                 "You are a friendly assistant for chat tasks. "
                 "Use retrieved context to answer questions briefly, "
-                "within 10-13 lines. If no context matches, use your own knowledge."
+                "if you dont know the answer and not in context , provide a relevant response . "
+                " you can use your creative and communication skills. If no context matches, use your own knowledge."
+                "example: "
+                "user : hai , content : bla bla bla (not useful)"
+                "assistent: hello i am a friendly assistant , how can i help you today ?"
+                "in this case let the answer should be relevent and general"
             )
 
             self.prompt = ChatPromptTemplate.from_messages(

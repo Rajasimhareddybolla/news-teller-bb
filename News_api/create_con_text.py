@@ -2,8 +2,7 @@ import os
 import json
 
 import glob
-import datetime
-import time
+
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate
@@ -11,10 +10,12 @@ from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
 # from langchain_chroma.vectorstores import Chroma
 from langchain.prompts import HumanMessagePromptTemplate, AIMessagePromptTemplate, PromptTemplate
 from langchain.chains import LLMChain
+import random
+apis = ["AIzaSyCVD2lN4cUXiiR3B3uW4XqZQbPPsUxaT0Q" ,"AIzaSyDiGh-sgE-MqFVq-4fRELfji61e66WatrI" , "AIzaSyBrS_cbP7xSgblv0lJg9nbcdyN3SS8xl6g"  , "AIzaSyD6dV0eY_tTTyIYKVUuRdi4FYSyzsOktU0" , "AIzaSyDFb40ou0vHKAseJG50S1-Cmm_m5Oc1Q2k" , "AIzaSyB3r2h5-SrU60MyaZIXg-Dl7fuJ4fG-Oro" ,"AIzaSyCMd32WUqHQc0P5M3qw9m6lteBfAYbcS2I" , "AIzaSyBfKmCv0vO9HFzk3UpkqkRFRIQhPpfEyWU"]
 
 class NewsSummarizer:
     def __init__(self, model_name):
-        load_dotenv()
+        os.environ["GOOGLE_API_KEY"] = random.choice(apis)
 
         self.model = ChatGoogleGenerativeAI(model=model_name)
         self.summarization_prompt = self.create_prompt_template()
