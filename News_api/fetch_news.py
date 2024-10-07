@@ -41,7 +41,7 @@ def get_unified_news(query_news = None, query_edge = None):
             temp["title"] = article["title"]
             temp["brief"] = article["description"]
             temp["image"] =  article["urlToImage"]
-            temp["content"] = article["url"]
+            temp["content"] = fetch_full_content(article["url"])
             temp["label"] = news[i]
             if article["author"] is None:
                 temp["author"] = "Anonymous"
@@ -56,9 +56,22 @@ def get_unified_news(query_news = None, query_edge = None):
     #     json.dump(final, f  , indent=4)
 
     return final 
+import requests
+from bs4 import BeautifulSoup
+
 def fetch_full_content(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    paragraphs = soup.find_all('p')
-    content = ' '.join([p.text for p in paragraphs])
-    return content
+    tags = soup.find_all(['p', 'rem', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+    
+    content = []
+    for tag in tags:
+        if tag.name == 'p':
+            content.append(f"{tag.text}\n")
+        elif tag.name == 'rem':
+            content.append(f"{tag.text}\n")
+        elif tag.name.startswith('h'):
+            level = int(tag.name[1])
+            content.append(f"{'#' * level} {tag.text}\n")
+    
+    return ''.join(content)
