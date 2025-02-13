@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/cf9059f0-cfdf-4b61-81d0-f17c74fea217/resourceGroups/news-teller/providers/Microsoft.Web/sites/news-teller-api",
+    "appService.deploySubpath": "."
+}
