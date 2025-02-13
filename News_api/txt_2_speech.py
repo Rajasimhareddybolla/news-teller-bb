@@ -8,7 +8,7 @@ import base64
 import io
 from concurrent.futures import ThreadPoolExecutor
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/rajasimha/Downloads/drive_g/clara/self_os/keys/gen-ai-448511-bce054155d75.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/gen-ai-448511-bce054155d75.json"
 
 class TextToSpeech:
     def __init__(self, subscription_key, region):
